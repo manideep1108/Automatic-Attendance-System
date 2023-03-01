@@ -1,0 +1,13 @@
+opencv-python
+argparse
+easydict
+Flask
+numpy
+requests
+tweepy
+retina-face
+torch
+DeepFace
+matplotlib
+pandas
+openpyxl
