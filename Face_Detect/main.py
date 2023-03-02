@@ -1,13 +1,12 @@
 import os
 import shutil
-
+import csv
 import cv2
 from pathlib import Path
 from retinaface import RetinaFace
 from pprint import pprint
 from deepface import DeepFace
-import pandas as pd
-from deepface.basemodels import VGGFace
+
 import shutil
 
 
@@ -98,7 +97,7 @@ def verify_face(img_path: str, db_path: str, ):
         identity = resp[0].iloc[0]["identity"]
         return extract_name_from_path(identity)
 
-def get_attendance(img_path: str, db_path: str):
+def get_attendance(img_path: str, db_path: str, save_as_csv, csv_file_path: str = None):
     all_students = []
     for i in os.listdir(db_path):
         if os.path.isdir(os.path.join(db_path, i)):
@@ -123,26 +122,41 @@ def get_attendance(img_path: str, db_path: str):
         else:
             output[student] = "Absent"
     shutil.rmtree(temp_path, ignore_errors=False)
+    if save_as_csv:
+        dict_to_csv(output, csv_file_path)
     return output
+
+
+def dict_to_csv(output: dict, csv_file_path):
+    with open(csv_file_path, 'w') as f:
+        w = csv.writer(f)
+        w.writerow(["Names", "Attendance"])
+        for key in output.keys():
+            w.writerow([key, output[key]])
 
 
 if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.abspath(__file__))
     database = str(Path(current_dir) / Path("Database"))
-    cropdatabase = str(Path(current_dir) / Path("Crop_Database"))
-    cropped_database = "Crop_Database"
-    # crop_database(database, current_dir, cropped_database)
+    # cropdatabase = str(Path(current_dir) / Path("Crop_Database"))
+    # cropped_database = "Crop_Database"
+    # # crop_database(database, current_dir, cropped_database)
+    #
+    # img1_path = os.path.join(current_dir, "Crop_Database/Narendra_Modi/NM1_face_1.jpg")
+    # img2_path = os.path.join(current_dir, "Crop_Database/Narendra_Modi/NM2_face_1.jpg")
+    # img3_path = os.path.join(current_dir, "Crop_Database/Vladimir_Putin/Putin1_face_1.jpg")
+    #
+    # img4_path = os.path.join(current_dir, "Database/Narendra_Modi/NM1.jpg")
+    # img5_path = os.path.join(current_dir, "Database/Narendra_Modi/NM2.jpg")
+    # img6_path = os.path.join(current_dir, "Database/Vladimir_Putin/Putin1.jpg")
+    # chris_path = os.path.join(current_dir, "chris.jpg")
+    test_1 = os.path.join(current_dir, "test1.jpg")
+    test_2 = os.path.join(current_dir, "test1.jpg")
+    test_3 = os.path.join(current_dir, "test1.jpg")
 
-    img1_path = os.path.join(current_dir, "Crop_Database/Narendra_Modi/NM1_face_1.jpg")
-    img2_path = os.path.join(current_dir, "Crop_Database/Narendra_Modi/NM2_face_1.jpg")
-    img3_path = os.path.join(current_dir, "Crop_Database/Vladimir_Putin/Putin1_face_1.jpg")
-
-    img4_path = os.path.join(current_dir, "Database/Narendra_Modi/NM1.jpg")
-    img5_path = os.path.join(current_dir, "Database/Narendra_Modi/NM2.jpg")
-    img6_path = os.path.join(current_dir, "Database/Vladimir_Putin/Putin1.jpg")
-    chris_path = os.path.join(current_dir, "chris.jpg")
-    class_pic = os.path.join(current_dir, "class_pic.jpg")
-    output = get_attendance(class_pic, database)
+    output = get_attendance(test_1, database, True, "Attendance.csv")
+    # output = get_attendance(test_2, database, True, "Attendance.csv")
+    # output = get_attendance(test_3, database, True, "Attendance.csv")
     pprint(output)
 
 
