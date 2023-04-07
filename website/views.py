@@ -16,7 +16,6 @@ buffer_path = Path(current_dir) / Path("buffer")
 csv_path = Path(buffer_path) / Path("attendance.csv")
 
 @views.route('/', methods=['GET', 'POST'])
-@login_required
 def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML 

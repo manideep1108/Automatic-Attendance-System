@@ -1,3 +1,4 @@
+opencv-python
 deepface
 retina-face
 Flask==2.2.3
