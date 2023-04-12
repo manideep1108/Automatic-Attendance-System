@@ -2,26 +2,37 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
-    <script src="{{ url_for('static', filename='js/tweet.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
 {% endblock %}
 
 {% block title %}Home{% endblock %} 
-{% block content%}
-<body>
+
+{% block content %}
     <div class="form-group">
         <h1>Attendance</h1>
         <form action="/attendance" method="POST" enctype="multipart/form-data">
             <label for="class_name">Class Name:</label>
             <input type="text" name="class_name"><br><br>
-            <label for="class_image">Class Image:</label>
-            <input type="file" name="class_image"><br><br>
-            <input type="submit" class= "btn btn-primary" value="Get Attendance">
+
+            <div id="image-source-div">
+                <input type="radio" id="upload-image" name="image-source" value="upload" checked="checked" onclick="toggleImageSource()"> Upload Image
+                <input type="radio" id="capture-image" name="image-source" value="capture" onclick="toggleImageSource()"> Capture Image
+            </div>
+            <br>
+
+            <div id="upload-image-div">
+                <label for="class_image">Class Image:</label>
+                <input type="file" name="class_image"><br><br>
+            </div>
+
+            <div id="capture-image-div" style="display:none">
+                <video id="webCam" autoplay playsinline width="400" height="300" ></video><br>
+                <button id="capture-button" class="btn btn-primary" style="display:none" onclick="captureImage()">Capture Image</button>
+                 <canvas id="canvas" width="400" height="300" style="display:none"></canvas>
+                <input type="hidden" name="class_image" id="class-image-data">
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Get Attendance">
         </form>
-
     </div>
-</body>
-    
-
-    {% endblock %}
-    
+{% endblock %}
