@@ -17,19 +17,7 @@ csv_path = Path(buffer_path) / Path("attendance.csv")
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-    if request.method == 'POST': 
-        note = request.form.get('note')#Gets the note from the HTML 
-
-        if len(note) < 1:
-            flash('Note is too short!', category='error') 
-        else:
-            new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-            db.session.add(new_note) #adding the note to the database 
-            db.session.commit()
-            flash('Note added!', category='success')
-
     return render_template("home.html", user=current_user)
-
 
 
 @views.route('/upload', methods=['POST', 'GET'])
@@ -88,12 +76,13 @@ def attendance():
             flash('Please enter a name for the folder', category='error')
             return render_template('attendance.html', user=current_user)
         
-        # Check that the file is a zip file
-        if ext != '.jpg':
-            flash('Please upload .jpg / .jpeg / .png files', category='error')
-            return render_template('attendance.html', user=current_user)
+        # # Check that the file is a jpg file
+        # if ext != '.jpg':
+        #     flash('Please upload .jpg / .jpeg / .png files', category='error')
+        #     return render_template('attendance.html', user=current_user)
 
         image_save_path = buffer_path / f'{file_name}{ext}'
+        print(file_name, ext)
         image.save(image_save_path)
         row = Database.query.filter_by(class_name=class_name).first()
         if row:

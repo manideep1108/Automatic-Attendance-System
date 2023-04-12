@@ -10,7 +10,7 @@
 {% block content %}
     <div class="form-group">
         <h1>Attendance</h1>
-        <form action="/attendance" method="POST" enctype="multipart/form-data">
+        <form id="attendance-form" action="/attendance" method="POST" enctype="multipart/form-data">
             <label for="class_name">Class Name:</label>
             <input type="text" name="class_name"><br><br>
 
@@ -22,14 +22,17 @@
 
             <div id="upload-image-div">
                 <label for="class_image">Class Image:</label>
-                <input type="file" name="class_image"><br><br>
+                <input type="file" name="class_image" id="class-image-data"><br><br>
             </div>
 
             <div id="capture-image-div" style="display:none">
                 <video id="webCam" autoplay playsinline width="400" height="300" ></video><br>
-                <button id="capture-button" class="btn btn-primary" style="display:none" onclick="captureImage()">Capture Image</button>
-                 <canvas id="canvas" width="400" height="300" style="display:none"></canvas>
-                <input type="hidden" name="class_image" id="class-image-data">
+                <button id="capture-button" class="btn btn-primary" style="display:none" onclick="captureImage()" type="button">Capture Image</button>
+                <canvas id="canvas" width="400" height="300" style="display:none"></canvas>
+                <input type="hidden" name="class_image" id="class-image-data"> 
+            </div>
+            <div id="show-image-div" style="display:none">
+                <img id="captured-image" width="400" height="300">
             </div>
 
             <input type="submit" class="btn btn-primary" value="Get Attendance">
